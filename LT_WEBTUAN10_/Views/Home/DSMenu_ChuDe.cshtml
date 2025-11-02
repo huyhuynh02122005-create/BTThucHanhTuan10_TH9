@@ -1,0 +1,12 @@
+﻿@model IEnumerable<LT_WEBTUAN10_.Models.CHUDE>
+
+
+<ul class="list-group">
+    @foreach (var cd in Model)
+    {
+        <li class="list-group-item">
+       
+            @Html.ActionLink(cd.TENCHUDE,"SachTheoCD","ChuDe", new { MaCD = cd.MACHUDE }, null)
+        </li>
+    }
+</ul> 

@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Cửa Hàng Sách</title>
+
+    @* 1. Tắt CSS gốc *@
+    @* @Styles.Render("~/Content/css") *@
+
+    @* 2. Thêm THEME (LITERA) để làm đẹp hơn *@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.6.2/dist/litera/bootstrap.min.css">
+
+    @* 3. Giữ lại file Site.css của bạn để tùy chỉnh riêng *@
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            @* Tên cửa hàng, nhấn vào về Trang Chủ *@
+            @Html.ActionLink("CỬA HÀNG SÁCH", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                @* Các link menu chính *@
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("Trang Chủ", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Tìm kiếm", "TimKiemNangCao", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    @* Bạn có thể thêm link About/Contact nếu cần *@
+                    @* <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li> *@
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid body-content" style="margin-top:20px;">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header font-weight-bold">
+                        CHỦ ĐỀ
+                    </div>
+                    <div class="card-body">
+                        @Html.Action("DSMenu_ChuDe", "Home")
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:20px;">
+                    <div class="card-header font-weight-bold">
+                        NHÀ XUẤT BẢN
+                    </div>
+                    <div class="card-body">
+                        @Html.Action("DSMenu_NXB", "Home")
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                @* Đây là nơi nội dung của Index.cshtml, ChiTiet.cshtml, v.v... sẽ được tải vào *@
+                @RenderBody()
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @* Các file script luôn để ở cuối cùng *@
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,53 @@
+﻿@* Model này nhận một danh sách SÁCH *@
+@model IEnumerable<LT_WEBTUAN10_.Models.SACH>
+
+@{
+    ViewBag.Title = "Sách theo Chủ đề";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@* Hiển thị tên chủ đề đã lấy từ Controller *@
+<h2 style="text-align:center; margin-top:20px;">SÁCH THEO CHỦ ĐỀ: @ViewBag.TenChuDe</h2>
+<hr />
+
+<div class="product-group">
+    <div class="row">
+
+        @* Kiểm tra xem có sách nào không *@
+        @if (!Model.Any())
+        {
+            @* Nếu không có sách, hiển thị thông báo từ ViewBag *@
+            <div class="col-md-12">
+                <p class="alert alert-warning" style="text-align:center; font-size:1.2em;">
+                    @ViewBag.ThongBao
+                </p>
+            </div>
+        }
+        else
+        {
+            @* Nếu có sách, dùng vòng lặp để hiển thị *@
+            foreach (var sACH in Model)
+            {
+                <div class="m-5 col-lg-3 card mr-2 mt-2 text-center">
+                    <div class=" card-product">
+                        <img style="width:300px;height:350px;" class="card-img-top mt-2"
+                             src="@Url.Content("~/Content/HinhAnhSP/" + sACH.ANHBIA)" />
+
+                        <div class="card-body">
+                            <h5 style="font-size:30px" class="card-title">@sACH.TENSACH</h5>
+
+                            @* Link đến trang Chi Tiết (đã làm ở bài trước) *@
+                            @Html.ActionLink("Chi Tiết", "ChiTiet", "Home",
+                                new { MaSach = sACH.MASACH },
+                                new { @class = "btn btn-warnings" })
+
+                            @Html.ActionLink("Chon", "Details", "BaiTH8_",
+                                new { MaSach = sACH.MASACH },
+                                new { @class = "btn btn-warnings" })
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

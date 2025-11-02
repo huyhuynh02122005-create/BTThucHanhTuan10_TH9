@@ -1,0 +1,120 @@
+﻿@model IEnumerable<LT_WEBTUAN10_.Models.SACH>
+
+@{
+    ViewBag.Title = "Tìm kiếm nâng cao";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center; margin-top:20px;">TÌM KIẾM NÂNG CAO</h2>
+<hr />
+
+@* ==================================================
+    PHẦN 1: FORM TÌM KIẾM
+    ==================================================
+*@
+<div class="container">
+    @* FormMethod.Get để gửi dữ liệu lên thanh URL (tốt cho tìm kiếm) *@
+    @using (Html.BeginForm("TimKiemNangCao", "Home", FormMethod.Get, new { @class = "form-horizontal" }))
+    {
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Tên sản phẩm:</label>
+            <div class="col-md-10">
+                @* Request.QueryString["tuKhoa"] để giữ lại từ khóa cũ sau khi tìm *@
+                @Html.TextBox("tuKhoa", Request.QueryString["tuKhoa"],
+                    new { @class = "form-control", placeholder = "Từ khóa..." })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Chủ đề:</label>
+            <div class="col-md-10">
+                @* "Tất cả chủ đề" sẽ có giá trị là null (rỗng) *@
+                @Html.DropDownList("maChuDe", ViewBag.MaChuDeList as SelectList,
+                    "--- Tất cả chủ đề ---",
+                    new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Giá:</label>
+            <div class="col-md-10">
+                @* Dùng RadioButton, "mucGia" là tên group *@
+                <div class="radio">
+                    @Html.RadioButton("mucGia", "1", Request.QueryString["mucGia"] == "1") 0 - 100.000 VNĐ
+                </div>
+                <div class="radio">
+                    @Html.RadioButton("mucGia", "2", Request.QueryString["mucGia"] == "2") 110.000 - 200.000 VNĐ
+                </div>
+                <div class="radio">
+                    @Html.RadioButton("mucGia", "3", Request.QueryString["mucGia"] == "3") 210.000 - 400.000 VNĐ
+                </div>
+                <div class="radio">
+                    @Html.RadioButton("mucGia", "4", Request.QueryString["mucGia"] == "4") Lớn hơn 400.000 VNĐ
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-10 offset-md-2">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+
+@* ==================================================
+    PHẦN 2: HIỂN THỊ KẾT QUẢ
+    ==================================================
+*@
+<h3 style="text-align:center;">KẾT QUẢ TÌM KIẾM</h3>
+
+<div class="product-group">
+    <div class="row">
+
+        @* Chỉ hiển thị kết quả NẾU ĐÃ TÌM KIẾM *@
+        @if (ViewBag.DaTimKiem == true)
+        {
+            @* Nếu Model có kết quả (Model.Any()) *@
+            if (Model.Any())
+            {
+                foreach (var sACH in Model)
+                {
+                    <div class="m-5 col-lg-3 card mr-2 mt-2 text-center">
+                        <div class=" card-product">
+                            <img style="width:300px;height:350px;" class="card-img-top mt-2"
+                                 src="@Url.Content("~/Content/HinhAnhSP/" + sACH.ANHBIA)" />
+
+                            <div class="card-body">
+                                <h5 style="font-size:30px" class="card-title">@sACH.TENSACH</h5>
+                                <p style="color:red; font-weight:bold;">@String.Format("{0:N0}", sACH.GIABAN) VNĐ</p>
+
+                                @Html.ActionLink("Chi Tiết", "ChiTiet", "Home",
+                                    new { MaSach = sACH.MASACH },
+                                    new { @class = "btn btn-warnings" })
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <p class="alert alert-warning" style="text-align:center;">
+                        Không tìm thấy sản phẩm nào phù hợp.
+                    </p>
+                </div>
+            }
+        }
+        else
+        {
+            @* Khi mới tải trang, chưa tìm kiếm *@
+            <div class="col-md-12">
+                <p class="alert alert-info" style="text-align:center;">
+                    Vui lòng nhập điều kiện tìm kiếm và nhấn "Search".
+                </p>
+            </div>
+        }
+    </div>
+</div>

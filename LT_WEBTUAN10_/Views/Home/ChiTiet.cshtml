@@ -1,0 +1,123 @@
+﻿@* 1. Đảm bảo model là VIewModel mới *@
+@model LT_WEBTUAN10_.Models.SachChiTietViewModel
+
+@{
+    ViewBag.Title = Model.Sach.TENSACH;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align: center; margin-top: 20px;">CHI TIẾT SẢN PHẨM</h2>
+<hr />
+
+<div class="container" style="margin-top: 30px;">
+    <div class="row">
+
+        @* CỘT BÊN TRÁI: HIỂN THỊ HÌNH ẢNH SÁCH *@
+        <div class="col-md-4">
+            <img src="@Url.Content("~/Content/HinhAnhSP/" + Model.Sach.ANHBIA)"
+                 alt="Bìa sách @Model.Sach.TENSACH"
+                 style="width: 100%; border: 1px solid #ddd; padding: 5px;" />
+        </div>
+
+        @* CỘT BÊN PHẢI: HIỂN THỊ TOÀN BỘ THÔNG TIN *@
+        <div class="col-md-8">
+
+            @* 2. Tên Sách - Lấy từ Model.Sach *@
+            <h3 style="font-weight: bold; color: #004d99;">
+                @Model.Sach.TENSACH
+            </h3>
+            <hr />
+
+            @* 3. Mô Tả - Lấy từ Model.Sach *@
+            <p style="font-size: 1.1em;">
+                <strong>Mô tả:</strong> @Model.Sach.MOTA
+            </p>
+
+            @* 4. Giá Bán - Lấy từ Model.Sach (Định dạng lại cho đẹp) *@
+            <h4 style="color: red; font-weight: bold; margin-top: 15px;">
+                Giá bán: @String.Format("{0:N0}", Model.Sach.GIABAN) VNĐ
+            </h4>
+
+            @* 5. Các Tác Giả - Lấy từ Model.TacGiaList *@
+            <div class="authors" style="margin-top: 20px; font-size: 1.1em;">
+                <strong>Các tác giả:</strong>
+
+                @if (Model.TacGiaList.Any())
+                {
+                    <ul style="list-style-type: disc; margin-left: 20px; margin-top: 10px;">
+                        @* Dùng vòng lặp để hiển thị tất cả tác giả *@
+                        @foreach (var tacgia in Model.TacGiaList)
+                        {
+                            <li>@tacgia.TenTacGia - <strong>@tacgia.VaiTro</strong></li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p><i>Đang cập nhật thông tin tác giả...</i></p>
+                }
+            </div>
+
+            @* 6. Nút Đặt Mua (Tạm thời) *@
+            <a href="#" class="btn btn-primary btn-lg" style="margin-top: 20px;">
+                Đặt mua
+            </a>
+
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 50px;">
+    <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">CÁC SẢN PHẨM CÙNG CHỦ ĐỀ</h3>
+
+    @if (Model.SachCungChuDe.Any())
+    {
+        <div class="row">
+            @foreach (var sach in Model.SachCungChuDe)
+            {
+                <div class="col-md-2 text-center" style="margin-bottom: 15px;">
+                    <a href="@Url.Action("ChiTiet", "Home", new { MaSach = sach.MASACH })">
+                        <img src="@Url.Content("~/Content/HinhAnhSP/" + sach.ANHBIA)"
+                             alt="@sach.TENSACH"
+                             style="width: 100%; height: 200px; object-fit: cover; border: 1px solid #ddd;" />
+                    </a>
+                    <div style="font-size: 0.9em; margin-top: 5px; height: 40px; overflow: hidden;">
+                        @sach.TENSACH
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p><i>Không có sản phẩm nào cùng chủ đề.</i></p>
+    }
+</div>
+
+
+<div class="container" style="margin-top: 30px; margin-bottom: 50px;">
+    <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">CÁC SẢN PHẨM CÙNG NHÀ XUẤT BẢN</h3>
+
+    @if (Model.SachCungNhaXuatBan.Any())
+    {
+        <div class="row">
+            @foreach (var sach in Model.SachCungNhaXuatBan)
+            {
+                <div class="col-md-2 text-center" style="margin-bottom: 15px;">
+                    <a href="@Url.Action("ChiTiet", "Home", new { MaSach = sach.MASACH })">
+                        <img src="@Url.Content("~/Content/HinhAnhSP/" + sach.ANHBIA)"
+                             alt="@sach.TENSACH"
+                             style="width: 100%; height: 200px; object-fit: cover; border: 1px solid #ddd;" />
+                    </a>
+                    <div style="font-size: 0.9em; margin-top: 5px; height: 40px; overflow: hidden;">
+                        @sach.TENSACH
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p><i>Không có sản phẩm nào cùng nhà xuất bản.</i></p>
+    }
+</div>
